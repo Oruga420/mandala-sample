@@ -15,7 +15,7 @@ void main() {
 }
 `;
 
-// Fragment Shader: Retro synthwave sun effect
+// Fragment Shader: Cyber Canada effect
 const fragmentShader = `
 uniform float uTime;
 uniform float uScroll;
@@ -33,9 +33,9 @@ float random(vec2 st) {
 
 void main() {
     // Colors
-    vec3 colorTop = uColorTop; // Greenish
-    vec3 colorMid = uColorMid; // Orange/Red
-    vec3 colorBot = uColorBot; // Yellow
+    vec3 colorTop = uColorTop; // White/Ice
+    vec3 colorMid = uColorMid; // Neon Red
+    vec3 colorBot = uColorBot; // Dark Urban
 
     // Vertical gradient
     float mix1 = smoothstep(0.0, 0.55, vUv.y);
@@ -60,9 +60,9 @@ void main() {
     vec3 finalColor = baseColor * stripeMask;
     
     // Add glow/fresnel edge
-    // Simple fake fresnel based on Z normal (simplified here via UV/Position approximation for sphere)
+    // Fresnel glow - using a hot red/orange to simulate city lights
     float fresnel = pow(1.0 - abs(vPosition.z), 3.0);
-    finalColor += fresnel * vec3(0.9, 0.4, 0.1) * 0.5;
+    finalColor += fresnel * vec3(1.0, 0.2, 0.2) * 0.6;
 
     // Apply grain
     finalColor += vec3(grain);
@@ -79,9 +79,9 @@ const Sphere = () => {
     () => ({
       uTime: { value: 0 },
       uScroll: { value: 0 },
-      uColorTop: { value: new THREE.Color('#1a4d2e') }, // Deep Green
-      uColorMid: { value: new THREE.Color('#d94f06') }, // Burnt Orange
-      uColorBot: { value: new THREE.Color('#facc15') }, // Yellow
+      uColorTop: { value: new THREE.Color('#ffffff') }, // Snow White
+      uColorMid: { value: new THREE.Color('#ff0033') }, // Canada Red
+      uColorBot: { value: new THREE.Color('#0a0a0a') }, // Asphalt Black
     }),
     []
   );
@@ -94,7 +94,6 @@ const Sphere = () => {
       material.uniforms.uTime.value += delta;
       
       // Update scroll uniform based on scroll offset (0 to 1)
-      // We dampen it slightly or multiply for effect intensity
       material.uniforms.uScroll.value = scroll.offset;
 
       // Rotate sphere slightly based on scroll
